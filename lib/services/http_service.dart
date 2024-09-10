@@ -41,6 +41,7 @@ class HttpService {
       return response;
     } catch (e) {
       print(e);
+      return null;
     }
   }
 

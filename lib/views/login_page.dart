@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:status_alert/status_alert.dart';
 //ignore_for_file: prefer_const_constructors
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   bool _obscureText = true;
   String? username, password;
@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 return null;
               },
               decoration: InputDecoration(
-                labelText: "Username",
+                //   labelText: "Username",
                 border: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: ColorManager.grey,
@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 return null;
               },
               decoration: InputDecoration(
-                labelText: "Password",
+                //    labelText: "Password",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(AppSize.s10)),
                   borderSide: BorderSide(
