@@ -3,7 +3,7 @@
 import 'package:e_commerce_app/models/product.dart';
 import 'package:e_commerce_app/resources/color.dart';
 import 'package:e_commerce_app/resources/styles_manager.dart';
-import 'package:e_commerce_app/widgets/custom_appbar.dart';
+import 'package:e_commerce_app/views/cart_page.dart';
 import 'package:e_commerce_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 //ignore_for_file: prefer_const_constructors
@@ -17,7 +17,11 @@ class ProductDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar(title: "Product Details Page"),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.white60,
+        title: Text('Product Details Page'),
+      ),
       body: _buildUI(context),
     );
   }
@@ -35,11 +39,10 @@ class ProductDetailsPage extends StatelessWidget {
 
   Widget _productImage(BuildContext context) {
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.40,
+      height: MediaQuery.sizeOf(context).height * 0.50,
       width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
         image: DecorationImage(
-          fit: BoxFit.cover,
           image: NetworkImage(product.image),
         ),
       ),
@@ -76,7 +79,18 @@ class ProductDetailsPage extends StatelessWidget {
             product.description,
             style: getRegularStyle(color: ColorManager.grey),
           ),
-          CustomElevatedButton(buttonText: "Add To Cart", onPressed: () {})
+          CustomElevatedButton(
+              buttonText: "Add To Cart",
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CartPage(
+                      product: product,
+                    ),
+                  ),
+                );
+              })
         ],
       ),
     );

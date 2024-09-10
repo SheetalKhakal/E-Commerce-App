@@ -4,6 +4,7 @@ import 'package:e_commerce_app/resources/styles_manager.dart';
 import 'package:e_commerce_app/resources/values_manager.dart';
 import 'package:e_commerce_app/services/auth_service.dart';
 import 'package:e_commerce_app/widgets/custom_button.dart';
+import 'package:e_commerce_app/widgets/toast_message.dart';
 import 'package:flutter/material.dart';
 import 'package:status_alert/status_alert.dart';
 //ignore_for_file: prefer_const_constructors
@@ -185,6 +186,7 @@ class _LoginPageState extends State<LoginPage> {
             bool result = await AuthService().login(username!, password!);
 
             if (result) {
+              ToastMessage.show("Login Successfully");
               Navigator.pushReplacementNamed(context, "/home");
             } else {
               StatusAlert.show(context,

@@ -12,26 +12,65 @@ class DataService {
 
   DataService._internal();
 
-//From getProducts() - get product list
-  Future<List<Product>?> getProducts() async {
+// From getProducts() - get product list
+
+  Future<List<Product>?> getProducts(
+      {String filter = '', String sort = ''}) async {
     String path = 'products/';
 
-    // if (filter.isNotEmpty) {
-    //   path += "category/$filter";
-    // }
+    if (filter.isNotEmpty) {
+      path += "category/$filter";
+    }
+
+    // Append sorting if provided
+    if (sort.isNotEmpty) {
+      // Assuming the sort parameter is something like 'asc' or 'desc'
+      // Example: 'asc' for ascending, 'desc' for descending
+      path += (path.contains('?') ? '&' : '?') + 'sort=$sort';
+    }
 
     var response = await _httpService.get(path);
 
     if (response?.statusCode == 200 && response?.data != null) {
       print(response?.data);
-      // Assuming the response data is a list of products
-      // Product product = Product.fromJson(response!.data);
-      // return product;
+      // Assuming the response is a list of product JSON objects
+      List<dynamic> productListJson = response!.data as List<dynamic>;
+
+      // Convert each JSON object into a Product instance
+      List<Product> productList =
+          productListJson.map((json) => Product.fromJson(json)).toList();
+
+      return productList;
     }
 
     // Handle errors or unexpected cases
     throw Exception('Failed to load products');
   }
+
+  // Future<List<Product>?> getProducts(String filter) async {
+  //   String path = 'products/';
+
+  //   if (filter.isNotEmpty) {
+  //     path += "category/$filter";
+  //   }
+
+  //   var response = await _httpService.get(path);
+
+  //   if (response?.statusCode == 200 && response?.data != null) {
+  //     print(response?.data);
+  //     // Assuming the response is a list of product JSON objects
+  //     List<dynamic> productListJson = response!.data as List<dynamic>;
+
+  //     // Convert each JSON object into a Product instance
+  //     List<Product> productList =
+  //         productListJson.map((json) => Product.fromJson(json)).toList();
+
+  //     return productList;
+  //   }
+
+  //   // Handle errors or unexpected cases
+  //   throw Exception('Failed to load products');
+  // }
 
   Future<Product> getProductById(String productId) async {
     String path = 'products/$productId';
@@ -47,24 +86,4 @@ class DataService {
     // Handle errors or unexpected cases
     throw Exception('Failed to load product');
   }
-
-  // Future<Recipe> getRecipes(String filter) async {
-  //   String path = 'recipes/';
-
-  //   if (filter.isNotEmpty) {
-  //     path += "meal-type/$filter";
-  //   }
-  //   var response = await _httpService.get(path);
-  //   if (response?.statusCode == 200 && response?.data != null) {
-  //     Recipe recipe = Recipe.fromJson(response!.data);
-  //     return recipe;
-  //   }
-  //   // Handle errors or unexpected cases
-  //   return Recipe(
-  //     recipes: [],
-  //     total: 0,
-  //     skip: 0,
-  //     limit: 0,
-  //   );
-  // }
 }
