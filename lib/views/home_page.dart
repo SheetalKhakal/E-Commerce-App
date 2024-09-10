@@ -3,6 +3,8 @@
 import 'package:e_commerce_app/models/recipe.dart';
 import 'package:e_commerce_app/services/data_service.dart';
 import 'package:e_commerce_app/views/recipe_page.dart';
+import 'package:e_commerce_app/widgets/custom_appbar.dart';
+import 'package:e_commerce_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,11 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-            'E-Commerce App'), //Add const bcaz Text will not be changed.Its fixed.
-        centerTitle: true,
-      ),
+      appBar: CustomAppBar(title: "E- Commerce App"),
       body: SafeArea(
         child: _buildUI(),
       ),
@@ -34,14 +32,14 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          _recepieTypeButtn(),
-          _recipesList(),
+          _filterSortButtons(),
+          _productList(),
         ],
       ),
     );
   }
 
-  Widget _recepieTypeButtn() {
+  Widget _filterSortButtons() {
     return SizedBox(
       height: MediaQuery.sizeOf(context).height * 0.05,
       child: ListView(
@@ -49,54 +47,24 @@ class _HomePageState extends State<HomePage> {
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.0),
-            child: FilledButton(
+            child: CustomElevatedButton(
+              buttonText: "Filter",
               onPressed: () {
                 setState(() {
                   _mealTypeFilter = "snack";
                 });
               },
-              child: Text(
-                "🥕Snack",
-              ),
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.0),
-            child: FilledButton(
+            child: CustomElevatedButton(
+              buttonText: "Sort By",
               onPressed: () {
                 setState(() {
-                  _mealTypeFilter = "breakfast";
+                  _mealTypeFilter = "snack";
                 });
               },
-              child: Text(
-                "🍳Breakfast",
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.0),
-            child: FilledButton(
-              onPressed: () {
-                setState(() {
-                  _mealTypeFilter = "lunch";
-                });
-              },
-              child: Text(
-                "🍗Lunch",
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.0),
-            child: FilledButton(
-              onPressed: () {
-                setState(() {
-                  _mealTypeFilter = "dinner";
-                });
-              },
-              child: Text(
-                "🍛Dinner",
-              ),
             ),
           ),
         ],
@@ -104,7 +72,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _recipesList() {
+  Widget _productList() {
     return Expanded(
       child: FutureBuilder<Recipe>(
         future: DataService().getRecipes(_mealTypeFilter),
