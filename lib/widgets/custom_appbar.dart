@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:e_commerce_app/resources/color.dart';
+import 'package:e_commerce_app/views/cart_page.dart';
 import 'package:flutter/material.dart';
 
 // Custom AppBar Widget with changeable title
@@ -32,6 +33,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   .pop(); // Default behavior if onBackPressed is not provided
             },
       ),
+      actions: [
+        IconButton(
+          icon: Icon(
+            Icons.shopping_cart,
+            color: Colors.white,
+            size: 30.0,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CartPage(),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 

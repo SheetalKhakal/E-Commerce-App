@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert'; // For JSON encoding/decoding
+import 'package:e_commerce_app/widgets/custom_appbar.dart';
 import 'package:e_commerce_app/widgets/custom_button.dart';
 import 'package:e_commerce_app/widgets/toast_message.dart';
 import 'package:flutter/material.dart';
@@ -130,20 +131,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Cart"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(),
-              ),
-            );
-          },
-        ),
-      ),
+      appBar: CustomAppBar(title: "Cart"),
       body: Column(
         children: [
           Expanded(
@@ -155,41 +143,77 @@ class _CartPageState extends State<CartPage> {
                       itemCount: _cartItems.length,
                       itemBuilder: (context, index) {
                         final item = _cartItems[index];
+                        // Calculate the total price based on quantity
+                        final totalPrice = item.price * item.quantity;
                         return ListTile(
-                          title: Text(item.name),
-                          subtitle: Text("\$${item.price}"),
-                          trailing: Container(
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(30), // Rounded corners
-                              border: Border.all(
-                                  color:
-                                      ColorManager.black_text), // Border color
-                            ),
-                            width: 170,
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.remove),
-                                  onPressed: () => _decreaseCount(index),
-                                ),
-                                Text('${item.quantity}'),
-                                IconButton(
-                                  icon: Icon(Icons.add),
-                                  onPressed: () => _increaseCount(index),
-                                ),
-                                SizedBox(width: 10),
-                                IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () => _deleteProduct(index),
-                                ),
-                              ],
-                            ),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // First Row: Item Name
+                              Text(item.name,
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+
+                              SizedBox(height: 8), // Spacing between rows
+
+                              // Second Row: Increment/Decrement and Delete buttons with Price
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // Increment/Decrement buttons inside Rounded Container
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          30), // Rounded corners
+                                      border: Border.all(
+                                          color: ColorManager
+                                              .black_text), // Border color
+                                    ),
+                                    width:
+                                        140, // Adjusted width to fit the buttons
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.remove),
+                                          onPressed: () =>
+                                              _decreaseCount(index),
+                                        ),
+                                        Text('${item.quantity}'),
+                                        IconButton(
+                                          icon: Icon(Icons.add),
+                                          onPressed: () =>
+                                              _increaseCount(index),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // Delete Button Outside Rounded Container
+                                  IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () => _deleteProduct(index),
+                                  ),
+
+                                  // Item Price
+                                  Text(
+                                    "${totalPrice.toStringAsFixed(2)}", // Showing the total price with 2 decimal places
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         );
                       },
                     ),
             ),
+          ),
+          Divider(
+            thickness: 1.0,
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
